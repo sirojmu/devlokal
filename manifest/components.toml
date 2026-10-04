@@ -1,0 +1,47 @@
+# Manifest komponen devlokal.
+#
+# PENTING: berkas ini sengaja belum berisi URL dan checksum untuk PHP dan MariaDB.
+# Isi dari sumber resmi masing-masing, lalu verifikasi sha256 sebelum dirilis:
+#   - nginx   : https://nginx.org/en/download.html
+#   - PHP     : https://windows.php.net/download/ (Windows); Linux/macOS: lihat docs/ARSITEKTUR.md
+#   - MariaDB : https://mariadb.org/download/
+#
+# Selama sha256 kosong, `devlokal fetch` menolak mengunduh kecuali dengan --trust-first-use,
+# yang hanya menampilkan checksum hasil unduhan agar bisa dicocokkan secara manual.
+# Alternatif tanpa internet: `devlokal import <id> <arsip-atau-folder>`.
+
+[[components]]
+id = "nginx-1.26.2"
+kind = "nginx"
+version = "1.26.2"
+note = "URL mengikuti pola resmi nginx.org; checksum belum diisi (perlu verifikasi)."
+
+[components.sources.windows-x86_64]
+url = "https://nginx.org/download/nginx-1.26.2.zip"
+sha256 = ""
+archive = "zip"
+strip = 1
+
+[[components]]
+id = "php-8.3"
+kind = "php"
+version = "8.3"
+note = "Isi url/sha256 dari windows.php.net (varian NTS x64 untuk php-cgi)."
+
+[components.sources.windows-x86_64]
+url = ""
+sha256 = ""
+archive = "zip"
+strip = 0
+
+[[components]]
+id = "mariadb-11.4"
+kind = "mariadb"
+version = "11.4"
+note = "Isi url/sha256 dari mariadb.org (arsip zip tanpa installer untuk Windows)."
+
+[components.sources.windows-x86_64]
+url = ""
+sha256 = ""
+archive = "zip"
+strip = 1

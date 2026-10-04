@@ -1,0 +1,15 @@
+[package]
+name = "devlokal"
+description = "CLI devlokal: lingkungan pengembangan web lokal yang ringan dan hemat bandwidth"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "devlokal"
+path = "src/main.rs"
+
+[dependencies]
+devlokal-core = { path = "../core" }
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }

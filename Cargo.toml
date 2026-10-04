@@ -1,0 +1,17 @@
+[workspace]
+resolver = "2"
+members = ["crates/core", "crates/cli"]
+# Aplikasi desktop (Tauri) belum ikut dibangun secara default; lihat src-tauri/README.md
+exclude = ["src-tauri"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/sirojmu/devlokal"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+opt-level = "s"

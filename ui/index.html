@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>devlokal</title>
+<style>
+  :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+  body { margin: 0; padding: 16px; max-width: 560px; }
+  h1 { font-size: 1.1rem; margin: 0 0 12px; }
+  h2 { font-size: .9rem; margin: 20px 0 8px; opacity: .7; text-transform: uppercase; letter-spacing: .04em; }
+  .row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-bottom: 1px solid #8884; }
+  .row .name { flex: 1; } .row small { opacity: .65; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #999; }
+  .dot.on { background: #2a9d4b; }
+  button { padding: 4px 12px; cursor: pointer; }
+  #msg { margin-top: 12px; min-height: 1.4em; color: #c0392b; white-space: pre-wrap; }
+  a { word-break: break-all; }
+</style>
+</head>
+<body>
+<h1>devlokal</h1>
+<div style="display:flex; gap:8px">
+  <button id="all-up">Jalankan semua</button>
+  <button id="all-down">Hentikan semua</button>
+  <button id="sync">Muat ulang proyek</button>
+</div>
+<h2>Layanan</h2><div id="services"></div>
+<h2>Proyek</h2><div id="projects"></div>
+<div id="msg"></div>
+<script>
+const invoke = window.__TAURI__.core.invoke;
+const msg = (t) => (document.getElementById('msg').textContent = t || '');
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+async function act(cmd, args) {
+  try { msg(''); await invoke(cmd, args); } catch (e) { msg(String(e)); }
+  await refresh();
+}
+
+async function refresh() {
+  try {
+    const sv = await invoke('status');
+    document.getElementById('services').innerHTML = sv.map(s => `
+      <div class="row">
+        <span class="dot ${s.running ? 'on' : ''}"></span>
+        <span class="name">${esc(s.name)} <small>${esc(s.component ?? 'belum terpasang')} · port ${s.port}</small></span>
+        <button data-cmd="${s.running ? 'stop' : 'start'}" data-name="${esc(s.name)}">${s.running ? 'Stop' : 'Start'}</button>
+      </div>`).join('');
+    const ps = await invoke('projects');
+    document.getElementById('projects').innerHTML = ps.length
+      ? ps.map(p => `<div class="row"><span class="name"><a href="${esc(p.url)}" target="_blank">${esc(p.domain)}</a><br><small>${esc(p.docroot)}</small></span></div>`).join('')
+      : '<small>Belum ada proyek. Buat dengan: devlokal new &lt;nama&gt;</small>';
+  } catch (e) { msg(String(e)); }
+}
+
+document.addEventListener('click', (ev) => {
+  const b = ev.target.closest('button[data-cmd]');
+  if (b) act(b.dataset.cmd, { name: b.dataset.name });
+});
+document.getElementById('all-up').onclick = async () => {
+  for (const n of ['mariadb', 'php', 'nginx']) { try { await invoke('start', { name: n }); } catch (e) { msg(String(e)); } }
+  refresh();
+};
+document.getElementById('all-down').onclick = async () => {
+  for (const n of ['nginx', 'php', 'mariadb']) { try { await invoke('stop', { name: n }); } catch (e) { msg(String(e)); } }
+  refresh();
+};
+document.getElementById('sync').onclick = () => act('sync');
+refresh();
+</script>
+</body>
+</html>
