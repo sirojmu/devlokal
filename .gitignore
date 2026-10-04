@@ -4,3 +4,4 @@
 # Ikon hasil `cargo tauri icon` boleh di-commit; hapus baris ini bila ingin menyertakannya.
 *.part
 .DS_Store
+.vs/

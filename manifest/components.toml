@@ -9,39 +9,41 @@
 # Selama sha256 kosong, `devlokal fetch` menolak mengunduh kecuali dengan --trust-first-use,
 # yang hanya menampilkan checksum hasil unduhan agar bisa dicocokkan secara manual.
 # Alternatif tanpa internet: `devlokal import <id> <arsip-atau-folder>`.
+# Manifest komponen devlokal (Windows x64).
+# Selama sha256 kosong, `devlokal fetch` menolak mengunduh komponen tersebut.
 
 [[components]]
-id = "nginx-1.26.2"
+id = "nginx-1.30.5"
 kind = "nginx"
-version = "1.26.2"
-note = "URL mengikuti pola resmi nginx.org; checksum belum diisi (perlu verifikasi)."
+version = "1.30.5"
+note = "Sumber resmi nginx.org. sha256: isi dari Get-FileHash."
 
 [components.sources.windows-x86_64]
-url = "https://nginx.org/download/nginx-1.26.2.zip"
-sha256 = ""
+url = "https://nginx.org/download/nginx-1.30.5.zip"
+sha256 = "e5afe28b6a50bec92c478bfe1a4d3758206b80fb77159277bc5c4e88955c2a35"
 archive = "zip"
 strip = 1
 
 [[components]]
-id = "php-8.3"
+id = "php-8.5.11"
 kind = "php"
-version = "8.3"
-note = "Isi url/sha256 dari windows.php.net (varian NTS x64 untuk php-cgi)."
+version = "8.5.11"
+note = "NTS x64 (vs17). URL berada di folder arsip downloads.php.net."
 
 [components.sources.windows-x86_64]
-url = ""
-sha256 = ""
+url = "https://downloads.php.net/~windows/releases/archives/php-8.5.11-nts-Win32-vs17-x64.zip"
+sha256 = "0ea96e0d2b9b737a6036f05cf4e95c49313faa6d0f27bd97edb2742503f0c043"
 archive = "zip"
 strip = 0
 
 [[components]]
-id = "mariadb-11.4"
+id = "mariadb-13.0.2"
 kind = "mariadb"
-version = "11.4"
-note = "Isi url/sha256 dari mariadb.org (arsip zip tanpa installer untuk Windows)."
+version = "13.0.2"
+note = "Mirror domainesia (Indonesia). Pastikan hash dicocokkan dengan mariadb.org."
 
 [components.sources.windows-x86_64]
-url = ""
-sha256 = ""
+url = "https://linux.domainesia.com/mariadb//mariadb-13.0.2/winx64-packages/mariadb-13.0.2-winx64.zip"
+sha256 = "ba9cefd6674b3f2f7bc67334c05305dc7c919643d76836e10767e70db0b5fb74"
 archive = "zip"
 strip = 1
